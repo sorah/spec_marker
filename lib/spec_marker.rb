@@ -3,10 +3,11 @@ require 'rspec/core/formatters/base_formatter'
 require 'json'
 
 class SpecMarker < RSpec::Core::Formatters::BaseFormatter
-  VERSION = "0.0.1"
+  VERSION = "0.0.2"
 
   class << self
     def mark(*args)
+      @listeners ||= []
       @listeners.each do |listener|
         listener.mark *args
       end
