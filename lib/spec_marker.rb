@@ -3,7 +3,7 @@ require 'rspec/core/formatters/base_formatter'
 require 'json'
 
 class SpecMarker < RSpec::Core::Formatters::BaseFormatter
-  VERSION = "0.0.2"
+  VERSION = "0.0.3"
 
   class << self
     def mark(tag, meta_or_kind={}, kind=nil, meta_for_search=nil)
