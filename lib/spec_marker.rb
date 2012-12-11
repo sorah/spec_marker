@@ -6,12 +6,21 @@ class SpecMarker < RSpec::Core::Formatters::BaseFormatter
   VERSION = "0.0.2"
 
   class << self
-    def mark(*args)
-      @listeners ||= []
-      @listeners.each do |listener|
-        listener.mark *args
+    def mark(tag, meta_or_kind={}, kind=nil, meta_for_search=nil)
+      if block_given?
+        begin
+          mark(tag, meta_or_kind, :start)
+          return yield
+        ensure
+          mark(tag, meta_or_kind, :end)
+        end
+      else
+        @listeners ||= []
+        @listeners.each do |listener|
+          listener.mark(tag, meta_or_kind, kind, meta_for_search)
+        end
+        self
       end
-      self
     end
 
     def _join(formatter)
@@ -48,6 +57,7 @@ class SpecMarker < RSpec::Core::Formatters::BaseFormatter
       meta = {}
       kind = meta_or_kind
     end
+
 
     m = {:tag => tag, :at => Time.now.to_f, :meta => meta, :kind => kind}
     if kind == :end
